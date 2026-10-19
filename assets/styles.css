@@ -1,0 +1,484 @@
+/* ============================================================
+   ResumeForge — 简历工坊
+   零依赖样式表。屏幕端为编辑器 UI，打印端为 A4 简历纸。
+   ============================================================ */
+
+:root {
+  --rf-bg: #f4f5f7;
+  --rf-panel: #ffffff;
+  --rf-ink: #1c1f23;
+  --rf-ink-2: #5b6470;
+  --rf-ink-3: #8b95a3;
+  --rf-line: #e3e6ea;
+  --rf-line-2: #eef1f4;
+  --rf-accent: #2f6bff;
+  --rf-accent-soft: #eaf0ff;
+  --rf-good: #17a673;
+  --rf-warn: #d98600;
+  --rf-bad: #e04a4a;
+  --rf-radius: 10px;
+  --rf-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 8px 24px -12px rgba(16, 24, 40, .18);
+  --rf-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --rf-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+             "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--rf-sans);
+  background: var(--rf-bg);
+  color: var(--rf-ink);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- 布局 ---------- */
+
+.rf-app {
+  display: grid;
+  grid-template-columns: minmax(360px, 460px) minmax(520px, 1fr) minmax(300px, 340px);
+  gap: 16px;
+  height: 100vh;
+  padding: 16px;
+}
+
+@media (max-width: 1400px) {
+  .rf-app { grid-template-columns: minmax(340px, 420px) 1fr; }
+  .rf-col--audit { grid-column: 1 / -1; height: auto; }
+}
+
+@media (max-width: 980px) {
+  .rf-app {
+    grid-template-columns: 1fr;
+    height: auto;
+    padding: 10px;
+  }
+  .rf-col { height: auto; max-height: none; }
+}
+
+.rf-col {
+  background: var(--rf-panel);
+  border: 1px solid var(--rf-line);
+  border-radius: var(--rf-radius);
+  box-shadow: var(--rf-shadow);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.rf-col__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--rf-line-2);
+  flex: 0 0 auto;
+}
+
+.rf-col__title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  margin: 0;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rf-col__body {
+  overflow: auto;
+  padding: 14px;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* ---------- 通用控件 ---------- */
+
+.rf-btn {
+  appearance: none;
+  border: 1px solid var(--rf-line);
+  background: #fff;
+  color: var(--rf-ink);
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .12s ease, border-color .12s ease, transform .06s ease;
+}
+.rf-btn:hover { background: #f7f8fa; border-color: #d3d8de; }
+.rf-btn:active { transform: translateY(1px); }
+.rf-btn--primary {
+  background: var(--rf-accent);
+  border-color: var(--rf-accent);
+  color: #fff;
+  font-weight: 600;
+}
+.rf-btn--primary:hover { background: #245ae0; border-color: #245ae0; }
+.rf-btn--ghost { background: transparent; border-color: transparent; color: var(--rf-ink-2); }
+.rf-btn--ghost:hover { background: #f2f4f7; color: var(--rf-ink); }
+.rf-btn--danger { color: var(--rf-bad); border-color: transparent; background: transparent; }
+.rf-btn--danger:hover { background: #fdeeee; }
+.rf-btn--xs { padding: 3px 8px; font-size: 12px; border-radius: 6px; }
+
+.rf-input,
+.rf-textarea,
+.rf-select {
+  width: 100%;
+  font: inherit;
+  font-size: 13px;
+  color: var(--rf-ink);
+  background: #fff;
+  border: 1px solid var(--rf-line);
+  border-radius: 8px;
+  padding: 7px 10px;
+  transition: border-color .12s ease, box-shadow .12s ease;
+}
+.rf-input:focus,
+.rf-textarea:focus,
+.rf-select:focus {
+  outline: none;
+  border-color: var(--rf-accent);
+  box-shadow: 0 0 0 3px var(--rf-accent-soft);
+}
+.rf-textarea { resize: vertical; line-height: 1.7; font-family: var(--rf-mono); font-size: 12.5px; }
+
+.rf-field { margin-bottom: 10px; }
+.rf-field__label {
+  display: block;
+  font-size: 12px;
+  color: var(--rf-ink-2);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.rf-row { display: flex; gap: 8px; }
+.rf-row > * { flex: 1 1 0; min-width: 0; }
+.rf-hint { font-size: 11.5px; color: var(--rf-ink-3); margin-top: 4px; line-height: 1.5; }
+
+/* ---------- 折叠区 ---------- */
+
+.rf-acc { border: 1px solid var(--rf-line-2); border-radius: 9px; margin-bottom: 10px; overflow: hidden; }
+.rf-acc__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 11px;
+  background: #fafbfc;
+  cursor: pointer;
+  user-select: none;
+}
+.rf-acc__head:hover { background: #f4f6f9; }
+.rf-acc__caret { color: var(--rf-ink-3); font-size: 10px; transition: transform .15s ease; }
+.rf-acc[data-open="1"] .rf-acc__caret { transform: rotate(90deg); }
+.rf-acc__name { font-size: 13px; font-weight: 700; flex: 1 1 auto; }
+.rf-acc__count { font-size: 11.5px; color: var(--rf-ink-3); font-variant-numeric: tabular-nums; }
+.rf-acc__body { padding: 11px; border-top: 1px solid var(--rf-line-2); display: none; }
+.rf-acc[data-open="1"] .rf-acc__body { display: block; }
+
+/* ---------- 经历条目 ---------- */
+
+.rf-item {
+  border: 1px solid var(--rf-line-2);
+  border-left: 3px solid var(--rf-line);
+  border-radius: 8px;
+  padding: 9px 10px;
+  margin-bottom: 9px;
+  background: #fff;
+}
+.rf-item__bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 7px;
+}
+.rf-item__idx {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--rf-ink-3);
+  font-variant-numeric: tabular-nums;
+  min-width: 18px;
+}
+.rf-item__spacer { flex: 1 1 auto; }
+
+/* ---------- 预览区 ---------- */
+
+.rf-stage {
+  background: #eceef1;
+  border-radius: 9px;
+  padding: 18px;
+  overflow: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.rf-page {
+  width: 210mm;
+  min-height: 297mm;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(16,24,40,.08), 0 18px 40px -20px rgba(16,24,40,.35);
+  padding: 15mm 16mm;
+  color: #14181d;
+  font-size: 10.5pt;
+  line-height: 1.55;
+  transform-origin: top center;
+  flex: 0 0 auto;
+}
+
+/* ---------- 简历纸张排版 ---------- */
+
+.rf-page h1 {
+  font-size: 21pt;
+  margin: 0 0 2px;
+  letter-spacing: .01em;
+  font-weight: 700;
+}
+.rf-page .r-pagetitle {
+  font-size: 11pt;
+  color: #3a424c;
+  margin: 0 0 6px;
+  font-weight: 500;
+}
+.rf-page .r-contact {
+  font-size: 9pt;
+  color: #4a525c;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 14px;
+  margin-bottom: 10px;
+}
+.rf-page .r-contact span { white-space: nowrap; }
+
+.rf-page h2 {
+  font-size: 10.5pt;
+  margin: 13px 0 6px;
+  padding-bottom: 3px;
+  border-bottom: 1.2px solid #14181d;
+  letter-spacing: .06em;
+  font-weight: 700;
+}
+.rf-page h2:first-of-type { margin-top: 4px; }
+
+.rf-page .r-summary { font-size: 10pt; color: #23282e; margin: 0; }
+
+.rf-entry { margin-bottom: 9px; }
+.rf-entry:last-child { margin-bottom: 0; }
+.rf-entry__top {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.rf-entry__org { font-weight: 700; font-size: 10.5pt; }
+.rf-entry__role { font-size: 10pt; color: #2b3138; }
+.rf-entry__meta {
+  margin-left: auto;
+  font-size: 9pt;
+  color: #5a626c;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rf-entry__sub { font-size: 9pt; color: #5a626c; margin-bottom: 2px; }
+
+.rf-page ul { margin: 3px 0 0; padding-left: 16px; }
+.rf-page li { margin-bottom: 2px; font-size: 10pt; }
+
+.rf-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 3px; }
+.rf-tag {
+  font-size: 9pt;
+  border: 1px solid #cfd5dc;
+  border-radius: 4px;
+  padding: 1px 7px;
+  color: #2b3138;
+  background: #fafbfc;
+}
+
+.rf-skillrow { font-size: 10pt; margin-bottom: 3px; }
+.rf-skillrow b { font-weight: 700; }
+
+/* ---------- 模板主题 ---------- */
+
+.rf-page[data-theme="classic"] h2 { border-bottom-color: #14181d; }
+
+.rf-page[data-theme="modern"] h1 { color: #1a3fd6; }
+.rf-page[data-theme="modern"] h2 {
+  border-bottom: none;
+  border-left: 3.5px solid #1a3fd6;
+  padding-left: 7px;
+  padding-bottom: 0;
+  color: #1a3fd6;
+}
+.rf-page[data-theme="modern"] .rf-tag { border-color: #c3cffb; background: #f2f5ff; color: #1a3fd6; }
+
+.rf-page[data-theme="compact"] { font-size: 10pt; padding: 12mm 13mm; }
+.rf-page[data-theme="compact"] h2 { margin: 10px 0 4px; font-size: 10pt; }
+.rf-page[data-theme="compact"] .rf-entry { margin-bottom: 7px; }
+.rf-page[data-theme="compact"] h1 { font-size: 18pt; }
+
+.rf-page[data-theme="serif"] { font-family: Georgia, "Songti SC", "SimSun", serif; }
+.rf-page[data-theme="serif"] h1 { font-family: var(--rf-sans); letter-spacing: .04em; }
+.rf-page[data-theme="serif"] h2 {
+  font-family: var(--rf-sans);
+  border-bottom: 1px solid #8d949c;
+  letter-spacing: .18em;
+  font-size: 10pt;
+}
+
+/* ---------- 审计（诊断）面板 ---------- */
+
+.rf-score {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 9px;
+  background: #fafbfc;
+  border: 1px solid var(--rf-line-2);
+  margin-bottom: 12px;
+}
+.rf-score__ring {
+  --v: 0;
+  width: 66px; height: 66px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  background:
+    conic-gradient(var(--ring-c, var(--rf-accent)) calc(var(--v) * 1%), #e8ebef 0);
+  position: relative;
+}
+.rf-score__ring::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  background: #fff;
+  border-radius: 50%;
+}
+.rf-score__ring b {
+  position: relative;
+  font-size: 19px;
+  font-variant-numeric: tabular-nums;
+}
+.rf-score__meta { flex: 1 1 auto; min-width: 0; }
+.rf-score__grade { font-size: 14px; font-weight: 700; }
+.rf-score__note { font-size: 11.5px; color: var(--rf-ink-3); line-height: 1.5; }
+
+.rf-dim { margin-bottom: 9px; }
+.rf-dim__top {
+  display: flex;
+  align-items: baseline;
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+.rf-dim__name { font-weight: 600; }
+.rf-dim__val { margin-left: auto; color: var(--rf-ink-2); font-variant-numeric: tabular-nums; }
+.rf-bar { height: 5px; background: #eaedf1; border-radius: 3px; overflow: hidden; }
+.rf-bar > i { display: block; height: 100%; border-radius: 3px; transition: width .25s ease; }
+.rf-bar > i[data-lv="good"] { background: var(--rf-good); }
+.rf-bar > i[data-lv="warn"] { background: var(--rf-warn); }
+.rf-bar > i[data-lv="bad"]  { background: var(--rf-bad); }
+
+.rf-issue {
+  border: 1px solid var(--rf-line-2);
+  border-left: 3px solid var(--rf-ink-3);
+  border-radius: 7px;
+  padding: 8px 10px;
+  margin-bottom: 7px;
+  font-size: 12.5px;
+}
+.rf-issue[data-sev="high"] { border-left-color: var(--rf-bad); }
+.rf-issue[data-sev="mid"]  { border-left-color: var(--rf-warn); }
+.rf-issue[data-sev="low"]  { border-left-color: var(--rf-good); }
+.rf-issue__t { font-weight: 700; margin-bottom: 2px; }
+.rf-issue__f { color: var(--rf-ink-2); font-size: 12px; line-height: 1.55; }
+.rf-issue__f code {
+  font-family: var(--rf-mono);
+  font-size: 11px;
+  background: #f3f5f7;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.rf-kw { display: flex; flex-wrap: wrap; gap: 5px; }
+.rf-kw span {
+  font-size: 11.5px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--rf-line);
+}
+.rf-kw span[data-hit="1"] { background: #eaf7f2; border-color: #b7e3d2; color: #0f7a55; }
+.rf-kw span[data-hit="0"] { background: #fdf1f1; border-color: #f5cccc; color: #b93636; }
+
+.rf-sec-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--rf-ink-2);
+  letter-spacing: .04em;
+  margin: 16px 0 8px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--rf-line);
+}
+.rf-sec-title:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+
+.rf-empty {
+  color: var(--rf-ink-3);
+  font-size: 12.5px;
+  text-align: center;
+  padding: 22px 10px;
+}
+
+.rf-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%) translateY(10px);
+  background: #1c1f23;
+  color: #fff;
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+  z-index: 999;
+}
+.rf-toast[data-on="1"] { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.rf-tagline {
+  font-size: 11px;
+  color: var(--rf-ink-3);
+  font-weight: 500;
+}
+
+/* ---------- 打印：只出简历纸 ---------- */
+
+@page { size: A4; margin: 0; }
+
+@media print {
+  html, body { background: #fff; height: auto; }
+  .rf-app { display: block; height: auto; padding: 0; gap: 0; }
+  .rf-col--form, .rf-col--audit, .rf-col__head, .rf-toast { display: none !important; }
+  .rf-col--stage { border: none; box-shadow: none; border-radius: 0; }
+  .rf-stage { background: #fff; padding: 0; overflow: visible; display: block; }
+  .rf-page {
+    width: 210mm;
+    box-shadow: none;
+    margin: 0;
+    transform: none !important;
+    page-break-after: always;
+  }
+  .rf-page:last-child { page-break-after: auto; }
+}

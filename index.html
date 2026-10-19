@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>简历工坊 ResumeForge — 写完就知道哪里会被筛掉</title>
+<meta name="description" content="纯本地运行的简历体检工具：写完当场看到哪条要点会被筛掉、缺哪些 JD 关键词，改完直接导出 PDF。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232f6f4e'/%3E%3Cpath d='M9 8h11l4 4v12H9z' fill='%23fff' opacity='.92'/%3E%3Cpath d='M20 8v4h4' fill='%232f6f4e'/%3E%3Cpath d='M12 16h9M12 20h6' stroke='%232f6f4e' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="./assets/styles.css">
+</head>
+<body>
+
+<div class="rf-app">
+
+  <!-- ================= 左：编辑 ================= -->
+  <section class="rf-col rf-col--form">
+    <div class="rf-col__head">
+      <h1 class="rf-col__title">简历工坊 <span class="rf-tagline">ResumeForge</span></h1>
+    </div>
+    <div class="rf-col__body" id="form-body"></div>
+  </section>
+
+  <!-- ================= 中：预览 ================= -->
+  <section class="rf-col rf-col--stage">
+    <div class="rf-col__head">
+      <h2 class="rf-col__title">预览 <span class="rf-tagline">A4 · 打印即成品</span></h2>
+      <span class="rf-tagline" id="fs-val">100%</span>
+      <input type="range" id="font-scale" min="0.8" max="1.2" step="0.02" style="width:88px">
+      <div id="tpl-row" style="display:flex;gap:4px"></div>
+      <button class="rf-btn rf-btn--primary" id="btn-print">导出 PDF</button>
+    </div>
+    <div class="rf-col__body rf-stage">
+      <div class="rf-page" id="page" data-theme="classic"></div>
+    </div>
+  </section>
+
+  <!-- ================= 右：审计 ================= -->
+  <section class="rf-col rf-col--audit">
+    <div class="rf-col__head">
+      <h2 class="rf-col__title">体检报告</h2>
+      <button class="rf-btn rf-btn--xs" id="btn-sample">示例</button>
+      <button class="rf-btn rf-btn--xs" id="btn-json">存档</button>
+      <button class="rf-btn rf-btn--xs" id="btn-json-load">读取</button>
+      <button class="rf-btn rf-btn--danger rf-btn--xs" id="btn-clear">清空</button>
+      <input type="file" id="file-json" accept="application/json" style="display:none">
+    </div>
+    <div class="rf-col__body" id="audit-body"></div>
+  </section>
+
+</div>
+
+<div class="rf-toast" id="toast"></div>
+
+<script src="./assets/engine.js"></script>
+<script src="./assets/app.js"></script>
+</body>
+</html>
